@@ -6,13 +6,10 @@ fun main() {
         when {
             inputString.isBlank() -> continue
             inputString == "/exit" -> break
-            !inputString.contains(" ") -> {
-                println(inputString)
-                continue
-            }
+            inputString == "/help" -> println("The program calculates the sum of numbers")
             else -> {
-                val (a, b) = inputString.split(" ")
-                val sum = a.toInt() + b.toInt()
+                val inputNumbers = inputString.split(" ").map { it.toInt() }
+                val sum = inputNumbers.sum()
                 println(sum)
             }
         }
