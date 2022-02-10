@@ -4,11 +4,20 @@ class Calculator {
     fun run() {
         while (true) {
             val inputString = readLine()!!
+            val expressionRegex = Regex("""[-+]?\d+( [-+]* -?\d+)*""")
+
+            val commandRegex = Regex("""/[a-zA-Z]+""")
             when {
                 inputString.isBlank() -> continue
-                inputString == "/exit" -> break
-                inputString == "/help" -> showHelp()
-                else -> calculate(inputString)
+                inputString.matches(expressionRegex) -> calculate(inputString)
+                inputString.matches(commandRegex) -> {
+                    when (inputString) {
+                        "/exit" -> break
+                        "/help" -> showHelp()
+                        else -> println("Unknown command")
+                    }
+                }
+                else -> println("Invalid expression")
             }
         }
         println("Bye!")
@@ -39,12 +48,12 @@ class Calculator {
 
     fun simplifyOperators(members: MutableList<String>) {
         for(index in 0..members.lastIndex) {
-            val value = members[index]
-            if (isNumber(value)) continue
-            if (value.first() == '+') {
+            if (members[index].matches("\\++".toRegex())) {
                 members[index] = "+"
-            } else if (value.first() == '-') {
-                members[index] = if (value.length % 2 == 0) "+" else "-"
+            }
+
+            if (members[index].matches("-+".toRegex())) {
+                members[index] = if (members[index].length % 2 == 0) "+" else "-"
             }
         }
     }
