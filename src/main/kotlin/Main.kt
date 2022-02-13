@@ -1,11 +1,13 @@
 package calculator
 
+import java.math.BigInteger
+
 class Calculator {
     val commandRegex = Regex("""/[a-z]+""")
     val expressionRegex = Regex("""-?(?:-?[0-9a-zA-Z()]+([-+]+|[*/]))+-?[0-9a-zA-Z()]+""")
 
     val variableRegex = Regex("""\w+(=[-+]?\w+)*""")
-    val globalVariables = mutableMapOf<String, Int>()
+    val globalVariables = mutableMapOf<String, BigInteger>()
     val errors = mapOf(
         "InvalidAssignment" to "Invalid assignment",
         "InvalidExpression" to "Invalid expression",
@@ -64,10 +66,10 @@ class Calculator {
 
         when {
             !leftValue.matches("""[a-zA-Z]+""".toRegex()) -> printError("InvalidIdentifier")
-            rightValue.matches("""[-]?\d+""".toRegex()) -> globalVariables[leftValue] = rightValue.toInt()
+            rightValue.matches("""[-]?\d+""".toRegex()) -> globalVariables[leftValue] = rightValue.toBigInteger()
             rightValue.matches("""[-]?[a-zA-Z]+""".toRegex()) -> {
                 if (globalVariables.containsKey(rightValue)) {
-                    globalVariables[leftValue] = globalVariables[rightValue]!!.toInt()
+                    globalVariables[leftValue] = BigInteger(globalVariables[rightValue]!!.toString())
                 } else {
                     printError("UnknownVariable")
                 }
@@ -102,11 +104,11 @@ class Calculator {
         members.replaceAll { it.replace("\\s*", "") }
     }
 
-    fun getValue(inputValue: String): Int {
+    fun getValue(inputValue: String): BigInteger {
         return try {
-            inputValue.toInt()
+            inputValue.toBigInteger()
         } catch (e: NumberFormatException) {
-            var result = 0
+            var result = BigInteger.ZERO
             if(globalVariables.containsKey(inputValue)) {
                 result = globalVariables[inputValue]!!
             } else {
@@ -162,7 +164,7 @@ class Calculator {
     }
 
     fun calculate(postfixStack: List<String>) {
-        val calculationStack = mutableListOf<Int>()
+        val calculationStack = mutableListOf<BigInteger>()
         for (el in postfixStack) {
             when {
                 el.matches("[\\d|a-zA-Z]+".toRegex()) -> {
