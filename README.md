@@ -1,8 +1,8 @@
 # SmartCalculator
 
-A  project (challenging) for JBA's **Kotlin Basics** track: https://hyperskill.org/projects/8?track=18
+A  project (challenging) for JBA's **Kotlin Core** track: https://hyperskill.org/projects/88?track=18
 
-A **graduate** project (challenging) for JBA's **Kotlin Developer** track: https://hyperskill.org/projects/8?track=3
+A **graduate** project (hard) for JBA's **Kotlin Developer** track: https://hyperskill.org/projects/88?track=3
 
 Apart from writing a useful program (everyone uses calculators!), 
 you will learn a lot about lists, stacks, strings, and queues.
